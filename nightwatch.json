@@ -1,0 +1,48 @@
+{
+  "src_folders" : [],
+  "output_folder" : "",
+  "custom_commands_path" : "",
+  "page_objects_path" : "",
+  "custom_assertions_path" : "",
+  "globals_path" : "",
+  "live_output" : false,
+  "parallel_process_delay" : 10,
+  "disable_colors": false,
+  "test_workers" : false,
+
+  "selenium" : {
+    "start_process" : false,
+    "server_path" : "/home/cdrouet/nanocloud/selenium-server-standalone-2.50.0.jar",
+    "log_path" : "",
+    "host" : "127.0.0.1",
+    "port" : 4444,
+    "cli_args" : {
+      "webdriver.chrome.driver" : "/home/cdrouet/nanocloud/chromedriver",
+      "webdriver.ie.driver" : "",
+      "webdriver.firefox.profile" : ""
+    }
+  },
+
+  "test_settings" : {
+    "default" : {
+      "launch_url" : "http://localhost",
+      "selenium_host" : "127.0.0.1",
+      "selenium_port" : 4444,
+      "silent" : true,
+      "disable_colors": false,
+      "screenshots" : {
+        "enabled" : false,
+        "path" : ""
+      },
+      "desiredCapabilities" : {
+        "browserName" : "chrome",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true,
+        "platform": "LINUX",
+        "chromeOptions" : {
+          "args" : ["--no-sandbox"]
+        }
+      }
+    }
+  }
+}

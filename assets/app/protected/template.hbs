@@ -7,7 +7,7 @@
         {{/link-to}}
         <ul class="nav">
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='Dashboard'>
               {{#link-to 'protected.dashboard'}}
                 <span class="icon">
                   <i class="material-icons">dashboard</i>
@@ -16,7 +16,7 @@
               {{/link-to}}
             </li>
           {{/if}}
-          <li>
+          <li id='Applications'>
             {{#link-to 'protected.images'}}
               <span class="icon">
                 <i class="material-icons">apps</i>
@@ -24,7 +24,7 @@
               Applications
             {{/link-to}}
           </li>
-          <li>
+          <li id='Files'>
             {{#link-to 'protected.files'}}
               <span class="icon">
                 <i class="material-icons">folder</i>
@@ -33,7 +33,7 @@
             {{/link-to}}
           </li>
           {{#unless session.user.isAdmin}}
-            <li>
+            <li id='Machines'>
               {{#link-to 'protected.machines.user'}}
                 <span class="icon">
                   <i class="material-icons">desktop_windows</i>
@@ -45,7 +45,7 @@
           {{/unless}}
 
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='Machines'>
               {{#link-to 'protected.machines'}}
                 <span class="icon">
                   <i class="material-icons">desktop_windows</i>
@@ -57,7 +57,7 @@
           {{/if}}
 
           {{#unless session.user.isAdmin}}
-            <li>
+            <li id='Profile'>
                 {{#link-to 'protected.users.user' session.user}}
                 <span class="icon">
                     <i class="material-icons">person</i>
@@ -69,7 +69,7 @@
 
           {{#unless session.user.isAdmin}}
             {{#if teamEnabled}}
-              <li>
+              <li id='Team'>
                   {{#link-to 'protected.users.teams'}}
                   <span class="icon">
                       <i class="material-icons">assignment_ind</i>
@@ -81,7 +81,7 @@
           {{/unless}}
 
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='History'>
               {{#link-to 'protected.histories'}}
                 <span class="icon">
                   <i class="material-icons">history</i>
@@ -92,7 +92,7 @@
           {{/if}}
 
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='Users'>
               {{#link-to 'protected.users'}}
                 <span class="icon">
                   <i class="material-icons">group</i>
@@ -103,7 +103,7 @@
           {{/if}}
 
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='Configuration'>
               {{#link-to 'protected.configs'}}
                 <span class="icon">
                   <i class="material-icons">settings</i>
@@ -114,7 +114,7 @@
           {{/if}}
 
           {{#if session.user.isAdmin}}
-            <li>
+            <li id='Brokerlog'>
               {{#link-to 'protected.brokerlog'}}
                 <span class="icon">
                   <i class="material-icons">timeline</i>

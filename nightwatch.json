@@ -30,8 +30,7 @@
       "silent" : true,
       "disable_colors": false,
       "screenshots" : {
-        "enabled" : true,
-        "on_failure": true,
+        "enabled" : false,
         "path" : "./nightwatch/"
       },
       "desiredCapabilities" : {

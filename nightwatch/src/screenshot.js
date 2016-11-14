@@ -1,13 +1,40 @@
+/**
+ * Nanocloud turns any traditional software into a cloud solution, without
+ * changing or redeveloping existing source code.
+ *
+ * Copyright (C) 2016 Nanocloud Software
+ *
+ * This file is part of Nanocloud.
+ *
+ * Nanocloud is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Nanocloud is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General
+ * Public License
+ * along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 module.exports = {
+  '@tags': ['screenshots'],
   'Screenshot' : function (client) {
     var sidebarContent = [
       {name: 'Dashboard', text: '0', type: '#'},
       {name: 'Applications', type: '#'},
-      {name: 'imageDetails', text: 'Applications navigate_next Image navigate_next Default', type: '#'},
+      {name: '//div[text()=\'Desktop\']', useXPath: true, noTitle: true, savePath: 'Desktop', pause: 5000},
+      {name: '//span[normalize-space(.)=\'Home\']', useXPath: true, text: 'Applications', noScreen: true},
+      {name: 'imageDetails', text: 'Applications navigate_next Image navigate_next Qemu default image', type: '#'},
       {name: 'Applications', type: '#'},
       {name: 'appDetails', text: 'Applications navigate_next Desktop', type: '#'},
       {name: 'Files', type: '#'},
-      {name: 'Machines', type: '#'},
+      {name: 'Machines', type: '#', pause: 1500},
       {name: 'History', type: '#'},
       {name: 'Users', type: '#'},
       {name: '//a[normalize-space(.)=\'Admin Nanocloud\']', useXPath: true, titleSize: 'h4', text: 'Users -\nAdmin editmode\nNanocloud editmode\nverified_user', savePath: 'UserDetails'},
@@ -18,6 +45,8 @@ module.exports = {
       {name: 'Configuration', type: '#', savePath: 'Session'},
       {name: '//a[normalize-space(.)=\'User rights\']', useXPath: true, text: 'Configuration', savePath: 'User rights'},
       {name: '//a[normalize-space(.)=\'Email configuration\']', useXPath: true, text: 'Configuration', savePath: 'Email configuration'},
+      {name: '//a[normalize-space(.)=\'Signup template\']', useXPath: true, text: 'Configuration', savePath: 'Signup template', pause: 500},
+      {name: '//a[normalize-space(.)=\'Reset password template\']', useXPath: true, text: 'Configuration', savePath: 'Reset password template', pause: 500},
       {name: '//a[normalize-space(.)=\'Look and feel\']', useXPath: true, text: 'Configuration', savePath: 'Look and feel'},
       {name: '//a[text()=\'LDAP\']', useXPath: true, text: 'Configuration', savePath: 'LDAP'},
       {name: '//a[normalize-space(.)=\'Other settings\']', useXPath: true, text: 'Configuration', savePath: 'Other settings'},
@@ -42,9 +71,13 @@ module.exports = {
       if (page.useXPath) {
         client.useCss();
       }
-      client.pause(200);
-      client.assert.containsText(((page.titleSize) ? page.titleSize : 'h1'), (page.text) ? page.text : page.name);
-      client.saveScreenshot('/home/cdrouet/nanocloud/nightwatch/screenshot/' + (page.savePath ? page.savePath : page.name) + '.png');
+      client.pause((page.pause) ? page.pause : 200);
+      if (!page.noTitle) {
+        client.assert.containsText(((page.titleSize) ? page.titleSize : 'h1'), (page.text) ? page.text : page.name);
+      }
+      if (!page.noScreen) {
+        client.saveScreenshot('/home/cdrouet/nanocloud/nightwatch/screenshot/' + (page.savePath ? page.savePath : page.name) + '.png');
+      }
     });
     client.end();
   }

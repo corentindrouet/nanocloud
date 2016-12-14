@@ -1,0 +1,19 @@
+{
+  "name": "nightwatch",
+  "private": true,
+  "description": "Nanocloud front tests",
+  "keywords": [],
+  "dependencies": {
+    "chromedriver": "^2.25.1",
+    "selenium": "^2.20.0",
+    "selenium-server": "^3.0.1",
+    "selenium-server-standalone-jar": "^3.0.1",
+    "selenium-webdriver": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nanocloud/nanocloud"
+  },
+  "license": "AGPL-3.0",
+  "devDependencies": {}
+}

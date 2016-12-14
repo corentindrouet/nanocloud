@@ -1,1 +1,1 @@
-selenium & nightwatch -c ./nightwatch.json --tag api_tests
+nightwatch -c ./nightwatch.json --tag api_tests

@@ -11,13 +11,13 @@
   "test_workers" : false,
 
   "selenium" : {
-    "start_process" : false,
-    "server_path" : "selenium",
+    "start_process" : true,
+    "server_path" : "/usr/lib/node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.0.1.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "./chromedriver",
+      "webdriver.chrome.driver" : "/usr/lib/node_modules/chromedriver/bin/chromedriver",
       "webdriver.chrome.bin" : "/usr/bin/google-chrome-stable"
     }
   },

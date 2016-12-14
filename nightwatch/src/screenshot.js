@@ -22,14 +22,16 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+const request = require('request-promise');
+
 module.exports = {
   '@tags': ['screenshots'],
   'Screenshot' : function (client) {
     var sidebarContent = [
       {name: 'Dashboard', text: '0', type: '#'},
       {name: 'Applications', type: '#'},
-      {name: '//div[text()=\'Desktop\']', useXPath: true, noTitle: true, savePath: 'Desktop', pause: 5000},
-      {name: '//span[normalize-space(.)=\'Home\']', useXPath: true, text: 'Applications', noScreen: true},
+//      {name: '//div[text()=\'Desktop\']', useXPath: true, noTitle: true, savePath: 'Desktop', pause: 5000},
+//      {name: '//span[normalize-space(.)=\'Home\']', useXPath: true, text: 'Applications', noScreen: true},
       {name: 'imageDetails', text: 'Applications navigate_next Image navigate_next Qemu default image', type: '#'},
       {name: 'Applications', type: '#'},
       {name: 'appDetails', text: 'Applications navigate_next Desktop', type: '#'},
@@ -72,9 +74,9 @@ module.exports = {
         client.useCss();
       }
       client.pause((page.pause) ? page.pause : 200);
-      if (!page.noTitle) {
-        client.assert.containsText(((page.titleSize) ? page.titleSize : 'h1'), (page.text) ? page.text : page.name);
-      }
+//      if (!page.noTitle) {
+//        client.assert.containsText(((page.titleSize) ? page.titleSize : 'h1'), (page.text) ? page.text : page.name);
+//      }
       if (!page.noScreen) {
         client.saveScreenshot('/home/cdrouet/nanocloud/nightwatch/screenshot/' + (page.savePath ? page.savePath : page.name) + '.png');
       }

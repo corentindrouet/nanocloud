@@ -22,6 +22,9 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+const assert = require('chai').assert;
+const _util = require('util');
+
 module.exports = {
   '@tags': ['api_tests'],
   'Tests login': function (client) {
@@ -54,13 +57,13 @@ module.exports = {
   },
 
   'Tests dashboard': function (client) {
-    client
+    client.pause(1000)
       .elements('css selector', 'div[class=\'ember-view card-component\']', (elements) => {
-        elements.value.forEach((element, index) => {
-          client.elementIdElement(element.ELEMENT, 'css selector', 'span', (Id) => {
-            client.elementIdAttribute(Id.value.ELEMENT, 'class', (cla) => {
-              client.elementIdText(Id.value.ELEMENT, (text) => {
-                client.assert.equal(text.value, (cla.value === '' || index === 3) ? 1 : 0);
+        elements.value.forEach((element) => {
+          client.elementIdElement(element.ELEMENT, 'css selector', 'h1', (Id) => {
+            client.elementIdElement(Id.value.ELEMENT, 'css selector', 'span', (spanId) => {
+              client.elementIdText(spanId.value.ELEMENT, (text) => {
+                assert.isAtLeast(text.value, 0, _util.format('Testing if number is present'));
               });
             });
           });
@@ -100,7 +103,7 @@ module.exports = {
       .useCss()
       .assert.containsText('h1', 'Applications navigate_next Image navigate_next Default')
       .elements('css selector', 'tr', (elements) => {
-        client.assert.equal(elements.value.length, 4);
+        client.assert.equal(elements.value.length, 6);
 
         client.elementIdElement(elements.value[0].ELEMENT, 'css selector', 'th', (title) => {
           client.elementIdText(title.value.ELEMENT, (text) => {
@@ -150,6 +153,46 @@ module.exports = {
           client.elementIdElement(value.value.ELEMENT, 'css selector', 'i', (i) => {
             client.elementIdText(i.value.ELEMENT, (text) => {
               client.assert.equal(text.value, 'content_copy');
+            });
+          });
+        });
+
+        client.elementIdElement(elements.value[4].ELEMENT, 'css selector', 'th', (title) => {
+          client.elementIdText(title.value.ELEMENT, (text) => {
+            client.assert.equal(text.value, 'Pool size');
+          });
+        });
+        client.elementIdElement(elements.value[4].ELEMENT, 'css selector', 'td', (value) => {
+          client.elementIdElement(value.value.ELEMENT, 'css selector', 'span[class=content]', (span) => {
+            client.elementIdText(span.value.ELEMENT, (text) => {
+              client.assert.equal(text.value, '1');
+            });
+          });
+          client.elementIdElement(value.value.ELEMENT, 'css selector', 'i', (i) => {
+            client.elementIdText(i.value.ELEMENT, (text) => {
+              client.assert.equal(text.value, 'editmode');
+            });
+          });
+        });
+
+        client.elementIdElement(elements.value[5].ELEMENT, 'css selector', 'th', (title) => {
+          client.elementIdText(title.value.ELEMENT, (text) => {
+            client.assert.equal(text.value, 'Instances size');
+          });
+        });
+        client.elementIdElement(elements.value[5].ELEMENT, 'css selector', 'td', (value) => {
+          client.elementIdElements(value.value.ELEMENT, 'css selector', 'md-checkbox', (checkboxs) => {
+            client.elementIdText(checkboxs.value[0].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Small');
+            });
+            client.elementIdText(checkboxs.value[1].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Medium');
+            });
+            client.elementIdText(checkboxs.value[2].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Large');
+            });
+            client.elementIdText(checkboxs.value[3].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Very large');
             });
           });
         });
@@ -226,6 +269,177 @@ module.exports = {
             client.elementIdText(button.value.ELEMENT, (text) => {
               client.assert.equal(text.value, 'Delete this application');
             });
+          });
+        });
+      });
+  },
+
+  'Tests machines tab': function (client) {
+    client.click('#Machines')
+      .pause(1500)
+      .useXpath()
+      .assert.visible('//i[normalize-space(.)=\'autorenew\']')
+      .useCss()
+      .elements('css selector', 'tbody', (tbody) => {
+        client.assert.equal(tbody.value.length, 1);
+        client.elementIdElements(tbody.value[0].ELEMENT, 'css selector', 'tr', (trs) => {
+          assert.isAtLeast(trs.value.length, 1, 'More than one machine is present');
+          trs.value.forEach((tr) => {
+            client.elementIdElements(tr.ELEMENT, 'css selector', 'td', (td) => {
+              client.assert.equal(td.value.length, 7);
+              client.elementIdText(td.value[1].ELEMENT, (text) => {
+                client.assert.equal(text.value, 'Default');
+              });
+              client.elementIdText(td.value[4].ELEMENT, (text) => {
+                client.assert.equal(text.value, '-');
+              });
+              client.elementIdText(td.value[5].ELEMENT, (text) => {
+                client.assert.equal(text.value, '-');
+              });
+            });
+          });
+        });
+      });
+  },
+
+  'Tests machines details': function (client) {
+    let machineTab = [
+      { th: 'IP', td: '127.0.0.1' },
+      { th: 'Image', td: 'Default' },
+      { th: 'Driver', td: 'dummy' },
+      { th: 'Machine size', td: 'medium' },
+      { th: 'Assigned user', td: 'None' },
+      { th: 'Reboot machine', td: 'Reboot' }
+    ];
+    client.useXpath()
+      .click('//div[normalize-space(.)=\'Nanocloud Exec Server\']')
+      .useCss()
+      .elements('css selector', 'tbody', (tbody) => {
+        client.assert.equal(tbody.value.length, 1);
+        client.elementIdElements(tbody.value[0].ELEMENT, 'css selector', 'tr', (trs) => {
+          client.assert.equal(trs.value.length, 6);
+          trs.value.forEach((tr, index) => {
+            client.elementIdElement(tr.ELEMENT, 'css selector', 'th', (th) => {
+              client.elementIdText(th.value.ELEMENT, (text) => {
+                client.assert.equal(text.value, machineTab[index].th);
+              });
+            });
+            client.elementIdElement(tr.ELEMENT, 'css selector', 'td', (td) => {
+              client.elementIdText(td.value.ELEMENT, (text) => {
+                client.assert.equal(text.value, machineTab[index].td);
+              });
+            });
+          });
+        });
+      });
+  },
+
+  'Tests history tab': function (client) {
+    client.click('#History')
+      .useXpath()
+      .assert.visible('//i[normalize-space(.)=\'autorenew\']')
+      .useCss();
+  },
+
+  'Tests users tab': function (client) {
+    client.click('#Users')
+      .useXpath()
+      .waitForElementVisible('//button[normalize-space(.)=\'Add user\']', 1000)
+      .useCss()
+      .element('css selector', 'tbody', (table) => {
+        client.elementIdElement(table.value.ELEMENT, 'css selector', 'tr', (tr) => {
+          client.elementIdElements(tr.value.ELEMENT, 'css selector', 'td', (tds) => {
+            client.assert.equal(tds.value.length, 5);
+            client.elementIdText(tds.value[0].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Admin Nanocloud');
+            });
+            client.elementIdText(tds.value[1].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'admin@nanocloud.com');
+            });
+            client.elementIdText(tds.value[2].ELEMENT, (text) => {
+              client.assert.equal(text.value, 'Administrator');
+            });
+            client.elementIdElement(tds.value[3].ELEMENT, 'css selector', 'div[class=\'circle down\']', (circle) => {
+              client.elementIdCssProperty(circle.value.ELEMENT, 'background-color', (BackgroundColor) => {
+                client.assert.equal(BackgroundColor.value, 'rgba(222, 222, 222, 1)');
+              });
+            });
+            client.elementIdText(tds.value[4].ELEMENT, (text) => {
+              client.assert.equal(text.value, '-');
+            });
+          });
+        });
+      });
+  },
+
+  'Tests user details': function (client) {
+    let userTab = [
+      { th: 'Email address', td: 'admin@nanocloud.com editmode' },
+      { th: 'Password', td: '****** editmode' },
+      { th: 'Group(s)', td: 'No group' },
+      { th: 'Expiration date', td: 'No expiration date set editmode' },
+      { th: 'Creation date', td: 'Today at ' },
+      { th: 'UUID', td: 'aff17b8b-bf91-40bf-ace6-6dfc985680bb content_copy' },
+      { th: 'Delete Account', td: 'Delete this account' },
+      { th: 'Is admin', td: '' },
+    ];
+    client.useXpath().click('//a[normalize-space(.)=\'Admin Nanocloud\']')
+      .useCss()
+      .element('css selector', 'tbody', (table) => {
+        client.elementIdElements(table.value.ELEMENT, 'css selector', 'tr', (trs) => {
+          client.assert.equal(trs.value.length, 8);
+          trs.value.forEach((tr, index) => {
+            client.elementIdElement(tr.ELEMENT, 'css selector', 'th', (th) => {
+              client.elementIdText(th.value.ELEMENT, (text) => {
+                client.assert.equal(text.value, userTab[index].th);
+              });
+            });
+            client.elementIdElement(tr.ELEMENT, 'css selector', 'td', (td) => {
+              client.elementIdText(td.value.ELEMENT, (text) => {
+                client.assert.equal((index !== 4) ? text.value : text.value.substr(0, 9), userTab[index].td);
+              });
+            });
+          });
+        });
+      });
+  },
+
+  'Tests groups page': function (client) {
+    client.useXpath().click('//a[normalize-space(.)=\'Groups\']')
+      .waitForElementVisible('//button[normalize-space(.)=\'Create a group\']', 1000)
+      .click('//button[normalize-space(.)=\'Create a group\']')
+      .useCss()
+      .setValue('#new-group-name', 'essai')
+      .click('button[type=submit]')
+      .waitForElementVisible('tbody', 1000)
+      .element('css selector', 'tbody', (table) => {
+        client.elementIdElement(table.value.ELEMENT, 'css selector', 'tr', (tr) => {
+          client.elementIdElements(tr.value.ELEMENT, 'css selector', 'td', (tds) => {
+            tds.value.forEach((td, index) => {
+              client.elementIdText(td.ELEMENT, (text) => {
+                client.assert.equal(text.value, (index === 0) ? 'essai' : 0);
+              });
+            });
+          });
+        });
+      });
+  },
+
+  'Tests group details': function (client) {
+    client.useXpath().click('//a[normalize-space(.)=\'essai\']')
+      .useCss()
+      .waitForElementVisible('ul', 1000)
+      .waitForElementVisible('tbody', 1000)
+      .element('css selector', 'ul[class="nav navbar-nav"]', (lists) => {
+        client.elementIdElements(lists.value.ELEMENT, 'css selector', 'li', (lis) => {
+          client.elementIdText(lis.value[0].ELEMENT, (text) => {
+            client.assert.equal(text.value, 'General');
+          });
+          client.elementIdText(lis.value[1].ELEMENT, (text) => {
+            client.assert.equal(text.value, 'Members');
+          });
+          client.elementIdText(lis.value[2].ELEMENT, (text) => {
+            client.assert.equal(text.value, 'Images');
           });
         });
       });
